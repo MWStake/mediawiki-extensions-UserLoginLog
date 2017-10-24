@@ -1,0 +1,34 @@
+{
+	"name": "mediawiki/user-login-log",
+	"extra": {
+		"installer-name": "UserLoginLog"
+	},
+	"license": "GPL-2.0+",
+	"type": "mediawiki-extension",
+	"homepage": "https:\/\/www.mediawiki.org\/wiki\/Extension:UserLoginLog",
+	"description": "Creates a new MediaWiki log for user logins and logout events",
+	"keywords": [
+		"extension",
+		"wiki",
+		"mediawiki",
+		"Log"
+	],
+	"authors": [
+		{
+			"name": "User:Nad",
+			"url": "https://www.organicdesign.co.nz/User:Nad",
+			"role": "Developer"
+		},
+		{
+			"name": "Mark A. Hershberger",
+			"url": "http://hexmode.com/",
+			"email": "mah@nichework.com",
+			"role": "Contributor"
+		}
+	],
+	"autoload" : {
+		"psr-4": {
+			"MediaWiki\\Extension\\UserLoginLog\\" : "src"
+		}
+	}
+}
