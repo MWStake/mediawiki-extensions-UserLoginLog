@@ -1,9 +1,9 @@
 {
 	"name": "UserLoginLog",
-	"version": "1.0.1, 2012-15-17",
+	"version": "1.5",
 	"author": [
 		"[http://www.organicdesign.co.nz/nad User:Nad]",
-		"[http://hexmode.com/ Mark A. Hershberger",
+		"[http://hexmode.com/ Mark A. Hershberger]"
 	],
 	"url": "http://www.mediawiki.org/wiki/Extension:UserLoginLog",
 	"description": "Creates a new MediaWiki log for user logins and logout events",
@@ -27,11 +27,15 @@
 			"i18n"
 		]
 	},
+	"AutoloadClasses": {
+		"MediaWiki\\Extension\\UserLoginLog\\Hook": "src/Hook.php",
+		"MediaWiki\\Extension\\UserLoginLog\\Config": "src/Config.php"
+	},
 	"Hooks": {
-		"UserLoginForm": "MediaWiki\\Extension\\UserLoginLog\\Hook\\logError",
-		"UserLoginComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook\\logSuccess",
-		"UserLogout": "MediaWiki\\Extension\\UserLoginLog\\Hook\\logout",
-		"UserLogoutComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook\\logoutComplete"
+		"UserLoginForm": "MediaWiki\\Extension\\UserLoginLog\\Hook::logError",
+		"UserLoginComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook::logSuccess",
+		"UserLogout": "MediaWiki\\Extension\\UserLoginLog\\Hook::logout",
+		"UserLogoutComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook::logoutComplete"
 	},
 	"config_prefix": "ULL",
 	"config": {
@@ -42,6 +46,5 @@
 	"ConfigRegistry": {
 		"userloginlog": "MediaWiki\\Extension\\UserLoginLog\\Config::newInstance"
 	},
-	"load_composer_autoloader" : true,
 	"manifest_version": 2
 }

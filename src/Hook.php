@@ -42,7 +42,7 @@ class Hook {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserLoginComplete
 	 */
-	public function logSuccess( User $user ) {
+	public static function logSuccess( User $user ) {
 		global $wgRequest;
 		$log = new LogPage( 'userlogin', false );
 		$log->addEntry( 'success', $user->getUserPage(), $wgRequest->getIP() );
@@ -56,14 +56,16 @@ class Hook {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserLoginForm
 	 * @deprecated since MW 1.27
 	 */
-	public function logError( QuickTemplate $tmpl ) {
-		global $wgUser, $ULLServerUser;
+	public static function logError( QuickTemplate $tmpl ) {
+		global $wgUser;
+
+		$config = Config::getInstance();
 
 		if ( $tmpl->data['message'] && $tmpl->data['messagetype'] == 'error' ) {
 			$log = new LogPage( 'userlogin', false );
 			$tmp = $wgUser->mId;
 			if ( $tmp == 0 ) {
-				$wgUser->mId = $ULLServerUser;
+				$wgUser->mId = $config->get( "ServerUser" );
 			}
 			$log->addEntry(
 				'error', $wgUser->getUserPage(), $tmpl->data['message'],
@@ -80,7 +82,7 @@ class Hook {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserLogout
 	 */
-	public function logout( User $user ) {
+	public static function logout( User $user ) {
 		self::$userBeforeLogout = User::newFromId( $user->getID() );
 	}
 
@@ -91,13 +93,15 @@ class Hook {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/UserLogoutComplete
 	 */
-	public function logoutComplete( $user ) {
+	public static function logoutComplete( $user ) {
 		global $wgUser;
 
 		$tmp = $wgUser->mId;
 		$wgUser->mId = self::$userBeforeLogout->getId();
 		$log = new LogPage( 'userlogin', false );
-		$log->addEntry( 'logout', $wgUserBeforeLogout->getUserPage(), $user->getName() );
+		$log->addEntry(
+			'logout', self::$userBeforeLogout->getUserPage(), $user->getName()
+		);
 		$wgUser->mId = $tmp;
 	}
 }
