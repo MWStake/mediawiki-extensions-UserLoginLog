@@ -1,6 +1,7 @@
 <?php
 /**
- * UserLoginLog - MediaWiki extension to add Userlogin events to the log
+ * UserLoginLog - MediaWiki extension to add Userlogin events to the
+ * log
  *
  * See http://www.mediawiki.org/wiki/Extension:UserLoginLog for
  * installation and usage details
@@ -32,6 +33,11 @@
  */
 namespace MediaWiki\Extension\UserLoginLog;
 
+use LogPage;
+use RequestContext;
+use QuickTemplate;
+use User;
+
 class Hook {
 	private $userBeforeLogout;
 
@@ -45,7 +51,10 @@ class Hook {
 	public static function logSuccess( User $user ) {
 		global $wgRequest;
 		$log = new LogPage( 'userlogin', false );
-		$log->addEntry( 'success', $user->getUserPage(), $wgRequest->getIP() );
+		$log->addEntry(
+			'success', $user->getUserPage(),
+			RequestContext::getMain()->getRequest()->getIP()
+		);
 	}
 
 	/**
@@ -59,17 +68,21 @@ class Hook {
 	public static function logError( QuickTemplate $tmpl ) {
 		global $wgUser;
 
-		$config = Config::getInstance();
+		$config = Config::newInstance();
 
-		if ( $tmpl->data['message'] && $tmpl->data['messagetype'] == 'error' ) {
+		if (
+			$tmpl->data['message'] &&
+			$tmpl->data['messagetype'] == 'error'
+		) {
 			$log = new LogPage( 'userlogin', false );
 			$tmp = $wgUser->mId;
 			if ( $tmp == 0 ) {
 				$wgUser->mId = $config->get( "ServerUser" );
 			}
 			$log->addEntry(
-				'error', $wgUser->getUserPage(), $tmpl->data['message'],
-				[ $wgRequest->getIP() ]
+				'error', $wgUser->getUserPage(),
+				$tmpl->data['message'],
+				[ RequestContext::getMain()->getRequest()->getIP() ]
 			);
 			$wgUser->mId = $tmp;
 		}
@@ -100,7 +113,8 @@ class Hook {
 		$wgUser->mId = self::$userBeforeLogout->getId();
 		$log = new LogPage( 'userlogin', false );
 		$log->addEntry(
-			'logout', self::$userBeforeLogout->getUserPage(), $user->getName()
+			'logout', self::$userBeforeLogout->getUserPage(),
+			$user->getName()
 		);
 		$wgUser->mId = $tmp;
 	}
