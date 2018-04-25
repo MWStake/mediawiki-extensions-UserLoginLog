@@ -39,7 +39,7 @@ use QuickTemplate;
 use User;
 
 class Hook {
-	private $userBeforeLogout;
+	private static $userBeforeLogout;
 
 	/**
 	 * Handler for the UserLoginComplete hook
