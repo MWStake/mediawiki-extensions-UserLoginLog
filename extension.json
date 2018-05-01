@@ -45,6 +45,5 @@
 	},
 	"ConfigRegistry": {
 		"userloginlog": "MediaWiki\\Extension\\UserLoginLog\\Config::newInstance"
-	},
-	"manifest_version": 2
+	}
 }
