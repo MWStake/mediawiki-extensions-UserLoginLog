@@ -68,23 +68,17 @@ class Hook {
 	public static function logError( QuickTemplate $tmpl ) {
 		global $wgUser;
 
-		$config = Config::newInstance();
-
 		if (
 			$tmpl->data['message'] &&
 			$tmpl->data['messagetype'] == 'error'
 		) {
 			$log = new LogPage( 'userlogin', false );
-			$tmp = $wgUser->mId;
-			if ( $tmp == 0 ) {
-				$wgUser->mId = $config->get( "ServerUser" );
-			}
+
 			$log->addEntry(
 				'error', $wgUser->getUserPage(),
 				$tmpl->data['message'],
 				[ RequestContext::getMain()->getRequest()->getIP() ]
 			);
-			$wgUser->mId = $tmp;
 		}
 	}
 

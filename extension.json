@@ -28,22 +28,12 @@
 		]
 	},
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\UserLoginLog\\Hook": "src/Hook.php",
-		"MediaWiki\\Extension\\UserLoginLog\\Config": "src/Config.php"
+		"MediaWiki\\Extension\\UserLoginLog\\Hook": "src/Hook.php"
 	},
 	"Hooks": {
 		"UserLoginForm": "MediaWiki\\Extension\\UserLoginLog\\Hook::logError",
 		"UserLoginComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook::logSuccess",
 		"UserLogout": "MediaWiki\\Extension\\UserLoginLog\\Hook::logout",
 		"UserLogoutComplete": "MediaWiki\\Extension\\UserLoginLog\\Hook::logoutComplete"
-	},
-	"config_prefix": "ULL",
-	"config": {
-		"ServerUser": {
-			"value": 1
-		}
-	},
-	"ConfigRegistry": {
-		"userloginlog": "MediaWiki\\Extension\\UserLoginLog\\Config::newInstance"
 	}
 }
