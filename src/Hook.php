@@ -52,8 +52,11 @@ class Hook {
 		global $wgRequest;
 		$log = new LogPage( 'userlogin', false );
 		$log->addEntry(
-			'success', $user->getUserPage(),
-			RequestContext::getMain()->getRequest()->getIP()
+			'success',
+			$user->getUserPage(),
+			RequestContext::getMain()->getRequest()->getIP(),
+			[],
+			$user
 		);
 	}
 
@@ -75,9 +78,11 @@ class Hook {
 			$log = new LogPage( 'userlogin', false );
 
 			$log->addEntry(
-				'error', $wgUser->getUserPage(),
+				'error',
+				$wgUser->getUserPage(),
 				$tmpl->data['message'],
-				[ RequestContext::getMain()->getRequest()->getIP() ]
+				[ RequestContext::getMain()->getRequest()->getIP() ],
+				$wgUser
 			);
 		}
 	}
@@ -107,8 +112,11 @@ class Hook {
 		$wgUser->mId = self::$userBeforeLogout->getId();
 		$log = new LogPage( 'userlogin', false );
 		$log->addEntry(
-			'logout', self::$userBeforeLogout->getUserPage(),
-			$user->getName()
+			'logout',
+			self::$userBeforeLogout->getUserPage(),
+			$user->getName(),
+			[],
+			self::$userBeforeLogout
 		);
 		$wgUser->mId = $tmp;
 	}
